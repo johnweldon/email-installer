@@ -1,0 +1,133 @@
+# Email Server Configuration Template
+# Copy this file to config.yaml and customize for your installation
+
+# Server hostname (FQDN)
+# This should be the fully qualified domain name of your mail server
+hostname: mail.example.com
+
+# Data directory for all mail server data
+# This directory will contain mail storage, certificates, logs, etc.
+# Make sure this path has sufficient disk space for your mail storage needs
+data_dir: /var/mail-server
+
+# Email domains configuration
+# List all domains that this server will handle mail for
+domains:
+  - name: example.com
+    # Users for this domain
+    users:
+      - username: admin
+        password: "ChangeMeStr0ng!"
+      - username: info
+        password: "AnotherStr0ngP@ss"
+      - username: support
+        password: "Supp0rtP@ssw0rd"
+  
+  - name: example.org
+    users:
+      - username: webmaster
+        password: "WebM@sterPass123"
+      - username: postmaster
+        password: "P0stM@sterPass"
+
+# SSL/TLS Certificates
+# Option 1: Provide existing certificates
+# Uncomment and configure if you have existing certificates
+# certificates:
+#   cert_path: /path/to/certificate.pem
+#   key_path: /path/to/private_key.pem
+#   ca_path: /path/to/ca_bundle.pem  # Optional
+
+# Option 2: Use Let's Encrypt (requires valid domain and port 80 access)
+# Set to true to automatically obtain Let's Encrypt certificates
+# letsencrypt: true
+
+# Option 3: Self-signed certificates (default)
+# If no certificates are provided, self-signed certificates will be generated
+# WARNING: Self-signed certificates should only be used for testing
+
+# Advanced configuration (optional)
+advanced:
+  # Maximum message size in bytes (default: 52428800 = 50MB)
+  message_size_limit: 52428800
+  
+  # Mailbox size limit in bytes (0 = unlimited)
+  mailbox_size_limit: 0
+  
+  # DKIM selector (default: mail)
+  dkim_selector: mail
+  
+  # Enable greylisting (helps reduce spam)
+  greylisting: false
+  
+  # Enable rate limiting
+  rate_limiting: true
+  rate_limit_requests: 100
+  rate_limit_period: 3600  # seconds
+  
+  # Backup settings
+  backup:
+    enabled: true
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    retention_days: 30
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    alert_email: admin@example.com
+    check_interval: 300  # seconds
+
+# DMARC configuration
+# Configure how strictly to enforce DMARC policy
+dmarc:
+  # Policy: none, quarantine, or reject
+  policy: quarantine
+  
+  # Percentage of messages to apply policy to (0-100)
+  percentage: 100
+  
+  # Email address for aggregate reports
+  aggregate_reports: postmaster@example.com
+  
+  # Email address for forensic reports
+  forensic_reports: postmaster@example.com
+  
+  # Alignment mode: relaxed or strict
+  # relaxed allows subdomains, strict requires exact match
+  dkim_alignment: relaxed
+  spf_alignment: relaxed
+
+# Additional security settings
+security:
+  # Require TLS for authentication
+  require_tls: true
+  
+  # Minimum TLS version (1.2 or 1.3)
+  min_tls_version: "1.2"
+  
+  # Enable perfect forward secrecy
+  perfect_forward_secrecy: true
+  
+  # Failed login attempts before temporary ban
+  max_auth_attempts: 5
+  
+  # Ban duration in seconds
+  auth_ban_time: 3600
+
+# Notes:
+# 1. PASSWORDS: Use strong passwords! The examples above should be changed.
+#    Requirements: At least 12 characters, mix of letters, numbers, symbols
+#
+# 2. FIREWALL: Ensure these ports are open in your firewall:
+#    - 25 (SMTP), 587 (Submission), 465 (SMTPS)
+#    - 143 (IMAP), 993 (IMAPS), 110 (POP3), 995 (POP3S)
+#    - 80 (HTTP for Let's Encrypt), 443 (HTTPS optional)
+#
+# 3. DNS: After installation, configure DNS records as shown in the report
+#
+# 4. BACKUPS: The data_dir contains all critical data. Back it up regularly!
+#
+# 5. TESTING: After installation, test with:
+#    - Send test emails between users
+#    - Test from external email providers
+#    - Check spam score at mail-tester.com
