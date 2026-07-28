@@ -1,5 +1,25 @@
 # Email Server Installer
 
+> ## ARCHIVED 2026-07-27 — not maintained, do not run against a live host
+>
+> This project is retired and the repository is archived (read-only). It is kept
+> for reference only.
+>
+> **Superseded by** the consolidated mail + WordPress baked-AMI work: the mail
+> stack is now built into an EC2 Image Builder AMI (`platforms/cloud/web-mail-ami`)
+> and run by `aws-production-environment/web-mail-linux-ami`. That change replaced
+> install-time and boot-time provisioning with a pre-baked image, which is why
+> this installer, the `mail-server` cloud-init attempt, and
+> `proxmox-email-server` were all retired together.
+>
+> **Nothing to clean up:** this is an imperative installer, not
+> infrastructure-as-code. It holds no state and manages no resources — it
+> configures whatever host you point it at. Retiring it does not decommission
+> anything by itself.
+>
+> The example passwords below are documentation placeholders, not real
+> credentials.
+
 A comprehensive installer for setting up a production-ready email server with support for multiple domains and users, featuring SMTP, IMAP, and POP3 services.
 
 ## Features
